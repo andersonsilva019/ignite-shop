@@ -1,14 +1,11 @@
 import 'keen-slider/keen-slider.min.css'
 import Image from 'next/image'
 import { useKeenSlider } from 'keen-slider/react'
-
-import camiseta1 from '../../assets/camisetas/1.png';
-import camiseta2 from '../../assets/camisetas/2.png';
-import camiseta3 from '../../assets/camisetas/3.png';
+import { HomeProps } from '../../pages';
 
 import * as S from './styles'
 
-export function HomePage(){
+export function HomePage({ products }: HomeProps) {
 
   const [sliderRef] = useKeenSlider({
     slides: {
@@ -19,34 +16,18 @@ export function HomePage(){
 
   return (
     <S.HomeContainer ref={sliderRef} className="keen-slider">
-      <S.Product className="keen-slider__slide">
-        <Image src={camiseta1} width={520} height={480} alt="" />
-        <footer>
-          <strong>Camiseta ...</strong>
-          <span>R$ 120,00</span>
-        </footer>
-      </S.Product>
-      <S.Product className="keen-slider__slide">
-        <Image src={camiseta2} width={520} height={480} alt="" />
-        <footer>
-          <strong>Camiseta ...</strong>
-          <span>R$ 120,00</span>
-        </footer>
-      </S.Product>
-      <S.Product className="keen-slider__slide">
-        <Image src={camiseta3} width={520} height={480} alt="" />
-        <footer>
-          <strong>Camiseta ...</strong>
-          <span>R$ 120,00</span>
-        </footer>
-      </S.Product>
-      <S.Product className="keen-slider__slide">
-        <Image src={camiseta3} width={520} height={480} alt="" />
-        <footer>
-          <strong>Camiseta ...</strong>
-          <span>R$ 120,00</span>
-        </footer>
-      </S.Product>
+      {products.map(product => (
+        <S.Product key={product.id} className="keen-slider__slide">
+          <Image src={product.imageUrl} width={520} height={480} alt="" />
+          <footer>
+            <strong>{product.name}</strong>
+            <span>{Intl.NumberFormat('pt-BR', {
+              style: 'currency',
+              currency: 'BRL'
+            }).format(product.price)}</span>
+          </footer>
+        </S.Product>
+      ))}
     </S.HomeContainer>
   )
 }
