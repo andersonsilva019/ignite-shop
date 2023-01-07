@@ -21,8 +21,6 @@ export function HomePage({ products }: HomeProps) {
         <Link 
           key={product.id}
           href={`/product/${product.id}`}
-          passHref
-          legacyBehavior
           prefetch={false}
         >
           <S.Product className="keen-slider__slide">

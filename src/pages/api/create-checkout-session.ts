@@ -24,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           },
         ],
         payment_method_types: ['card'],
-        success_url: `${domainURL}/order/success`,
+        success_url: `${domainURL}/order/success?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${domainURL}/`,
       })
 
