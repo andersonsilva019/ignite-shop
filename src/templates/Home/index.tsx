@@ -23,10 +23,7 @@ export function HomePage({ products }: HomeProps) {
             <Image src={product.imageUrl} width={520} height={480} alt="" />
             <footer>
               <strong>{product.name}</strong>
-              <span>{Intl.NumberFormat('pt-BR', {
-                style: 'currency',
-                currency: 'BRL'
-              }).format(product.price)}</span>
+              <span>{product.price}</span>
             </footer>
           </S.Product>
         </Link>
