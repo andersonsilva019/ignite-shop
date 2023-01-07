@@ -14,22 +14,12 @@ export const StripeServices = {
     priceId,
     quantity
   }: createCheckoutSessionParams): Promise<createCheckoutSessionReturnType> {
-    try {
+    
+    const response = await api.post('/create-checkout-session', {
+      priceId,
+      quantity
+    })
 
-      if (!priceId) throw new Error('Price ID is required')
-
-      if (!quantity) throw new Error('Quantity is required')
-
-      const response = await api.post('/create-checkout-session', {
-        priceId,
-        quantity
-      })
-
-      return response.data
-
-    } catch (error: any) {
-      console.error(error);
-      throw new Error(error.message);
-    }
+    return response.data
   }
 }
