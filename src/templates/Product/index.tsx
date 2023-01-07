@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { StripeServices } from '../../services/StripeServices'
 
 import * as S from './styles'
 
@@ -9,10 +10,27 @@ type ProductProps = {
     description: string
     imageUrl: string
     price: string
+    defaultPriceId: string
   }
 }
 
 export function ProductPage({ product }: ProductProps){
+
+  const handleBuyProduct = async () => {
+    try {
+      
+      const url = await StripeServices.createCheckoutSession({
+        priceId: product.defaultPriceId,
+        quantity: 1
+      })
+
+      window.location.href = url.checkout_url;
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <S.ProductContainer>
       <S.ImageContainer>
@@ -22,7 +40,7 @@ export function ProductPage({ product }: ProductProps){
         <h1>{product.name}</h1>
         <span>{product.price}</span>
         <p>{product.description}</p>
-        <button>Comprar agora</button>
+        <button onClick={handleBuyProduct}>Comprar agora</button>
       </S.ProductDetails>
     </S.ProductContainer>
   )

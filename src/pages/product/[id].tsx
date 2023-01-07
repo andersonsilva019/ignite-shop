@@ -16,6 +16,7 @@ export type ProductProps = {
     description: string
     imageUrl: string
     price: string
+    defaultPriceId: string
   }
 }
 
@@ -77,7 +78,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
           name: product.name,
           description: product.description,
           imageUrl: product.images[0],
-          price: formattedPrice
+          price: formattedPrice,
+          defaultPriceId: price.id
         }
       },
       revalidate: 60 * 60 * 1 // 1 hour
