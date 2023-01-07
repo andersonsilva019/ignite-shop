@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import logo from '../../assets/logo.svg'
 
 import * as S from './styles'
@@ -10,7 +11,7 @@ export function BaseTemplate({ children }: BaseTemplateProps) {
   return (
     <S.Container>
       <S.Header>
-          <img src={logo.src} alt="" />
+          <Image src={logo} alt="" />
       </S.Header>
       {children}
     </S.Container>
