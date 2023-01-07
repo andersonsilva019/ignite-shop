@@ -17,8 +17,11 @@ type ProductProps = {
 export function ProductPage({ product }: ProductProps){
 
   const handleBuyProduct = async () => {
+
+    // Adicionar uma validação para priceId e quantity
+
     try {
-      
+
       const url = await StripeServices.createCheckoutSession({
         priceId: product.defaultPriceId,
         quantity: 1
@@ -27,6 +30,8 @@ export function ProductPage({ product }: ProductProps){
       window.location.href = url.checkout_url;
 
     } catch (error) {
+      // Conectar com algum serviço de monitoramento de erros (Sentry, Bugsnag, DataDog, etc)
+
       console.log(error)
     }
   }
