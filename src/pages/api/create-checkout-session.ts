@@ -6,7 +6,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     try {
       const price = req.body.priceId;
+
+      if(!price) return res.status(400).json({ error: 'Price not found' })
+
       const quantity = req.body.quantity;
+
+      if(!quantity) return res.status(400).json({ error: 'Quantity not found' })
 
       const domainURL = process.env.NEXT_URL;
 
