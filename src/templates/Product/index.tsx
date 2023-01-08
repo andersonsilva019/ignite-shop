@@ -1,4 +1,6 @@
 import Image from 'next/image'
+import { useEffect, useMemo } from 'react'
+import { ApiServices, cancelIncrementalTimesAccessed } from '../../services/ApiServices'
 import { StripeServices } from '../../services/StripeServices'
 
 import * as S from './styles'
@@ -14,12 +16,25 @@ type ProductProps = {
   }
 }
 
-export function ProductPage({ product }: ProductProps){
+export function ProductPage({ product }: ProductProps) {
+
+  useEffect(() => {  
+    const incrementalTimesAccessed = async () => {
+      try {
+        await ApiServices.incrementalTimesAccessed(product.id)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    incrementalTimesAccessed()
+
+    return () => cancelIncrementalTimesAccessed()
+    
+  },[product.id])
 
   const handleBuyProduct = async () => {
-
     // Adicionar uma validação para priceId e quantity
-
     try {
 
       const url = await StripeServices.createCheckoutSession({
@@ -39,7 +54,7 @@ export function ProductPage({ product }: ProductProps){
   return (
     <S.ProductContainer>
       <S.ImageContainer>
-        <Image src={product.imageUrl} alt="" width={520} height={480}/>
+        <Image src={product.imageUrl} alt="" width={520} height={480} />
       </S.ImageContainer>
       <S.ProductDetails>
         <h1>{product.name}</h1>

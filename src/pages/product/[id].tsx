@@ -1,12 +1,19 @@
+import mongoose from 'mongoose'
 import { GetStaticPaths, GetStaticProps } from "next"
 import { useRouter } from 'next/router'
 import Stripe from "stripe"
 import { stripe } from "../../lib/stripe"
 import { ProductPage } from "../../templates/Product"
+import MoreAccessedModel from '../../schemas/more-accessed-products'
 
 enum Currency {
   BRL = 'BRL',
   USD = 'USD'
+}
+
+enum SORT_ORDER {
+  ASC = 'asc',
+  DESC = 'desc'
 }
 
 export type ProductProps = {
@@ -34,19 +41,36 @@ export default function Product(props: ProductProps) {
 
 export const getStaticPaths: GetStaticPaths = async () => {
 
+  // const response = await stripe.products.list({
+  //   expand: ['data.default_price'],
+  //   limit: 2
+  // })
 
-  const response = await stripe.products.list({
-    expand: ['data.default_price'],
-    limit: 2
+  // const paths = response.data.map(product => ({
+  //   params: { id: product.id }
+  // }))
+
+  // return {
+  //   paths,
+  //   fallback: true
+  // }
+
+  await mongoose.connect(process.env.NEXT_MONGO_URI as string, {
+    dbName: process.env.NEXT_MONGO_DATABASE,
   })
 
-  const paths = response.data.map(product => ({
-    params: { id: product.id }
-  }))
+  const productsMoreAccessed = await MoreAccessedModel.find({})
+    .sort({ timesAccessed: SORT_ORDER.DESC })
+    .limit(2)
+    .exec()
 
+  const paths = productsMoreAccessed.map(product => ({
+    params: { id: product.productId }
+  }))
+  
   return {
     paths,
-    fallback: 'blocking'
+    fallback: true
   }
 }
 
@@ -57,7 +81,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       expand: ['default_price']
     })
 
-    if(!product.active) {
+    if (!product.active) {
       console.log(`Product ${product.id} is not active`)
       return {
         notFound: true
