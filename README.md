@@ -9,6 +9,10 @@ O projeto tem como finalidade o aprendizado mais profundo do Nextjs.
 - [ ] Adicionar testes;
 - [x] Computar quantas vez um produto foi acessado para poder gerar de forma estática com `getStaticProps` os produtos mais acessados;
 
+> A solução encontrada para realizar essa computação foi utilizando um banco de dados não relacional, o MongoDB. A cada vez que um produto é acessado, é feito uma requisição para o banco de dados para atualizar a quantidade de acessos do produto.
+
+https://user-images.githubusercontent.com/52974388/211214360-6a016eb0-a803-43c5-90a6-38e94b8e9896.mp4
+
 ### 📋 Pré-requisitos
 
 - Criar uma conta no [Stripe](https://stripe.com/br) para gerar as chaves de acesso a API.
