@@ -108,8 +108,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       },
       revalidate: 60 * 60 * 1 // 1 hour
     }
-  } catch (error) {
-    console.log(error)
+  } catch (error: any) {
+    throw new Error(error.message)
     return {
       notFound: true
     }

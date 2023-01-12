@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 import { ApiServices, cancelIncrementalTimesAccessed } from '../../services/ApiServices'
 import { StripeServices } from '../../services/StripeServices'
 
@@ -22,8 +22,8 @@ export function ProductPage({ product }: ProductProps) {
     const incrementalTimesAccessed = async () => {
       try {
         await ApiServices.incrementalTimesAccessed(product.id)
-      } catch (error) {
-        console.log(error)
+      } catch (error: any) {
+        throw new Error(error.message)
       }
     }
 
@@ -44,10 +44,8 @@ export function ProductPage({ product }: ProductProps) {
 
       window.location.href = url.checkout_url;
 
-    } catch (error) {
-      // Conectar com algum serviço de monitoramento de erros (Sentry, Bugsnag, DataDog, etc)
-
-      console.log(error)
+    } catch (error: any) {
+      throw new Error(error.message)
     }
   }
 

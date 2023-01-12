@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { captureException as SentryCaptureException } from '@sentry/nextjs'
 import mongoose from 'mongoose'
 import MoreAccessedModel from '../../schemas/more-accessed-products'
 
@@ -28,6 +29,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       return res.status(200).json({ success: true, productsMoreAccessed })
     } catch (error: any) {
+
+      SentryCaptureException(error.message)
+
       return res.status(500).json({ success: false, error: error.message })
     }
   }
